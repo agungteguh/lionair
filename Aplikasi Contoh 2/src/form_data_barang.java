@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import static java.lang.Math.floor;
 import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -549,42 +550,86 @@ tampil_barang() ;
     // End of variables declaration//GEN-END:variables
 
    private void OS() {
-     int Cok = 0,Cak = 0,Cik = 0 ;  
+     int Cok = 0,Cak = 0,Cik = 0,a=0,b=0,c=0,d=0,f=0,g=0,aa=0,bb=0,cc=0,dd=0,ff=0,gg=0;
      JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         String sql = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=10 and year(flight_date)=2015";
-         String sql1 = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=11 and year(flight_date)=2015";
-         String sql2 = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=12 and year(flight_date)=2015";
-        Connection koneksi = new koneksi().getConnection();
-        Connection koneksi1 = new koneksi().getConnection();
-        Connection koneksi2 = new koneksi().getConnection();
+        String sql1 = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=11 and year(flight_date)=2015";
+        String sql2 = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=12 and year(flight_date)=2015";
+        String sql3= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=12 and year(flight_date)=2015";
+        String sql4= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=11 and year(flight_date)=2015";
+        String sql5= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=10 and year(flight_date)=2015";
+         String sql6= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM non_revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=12 and year(flight_date)=2015";
+        String sql7= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM non_revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=11 and year(flight_date)=2015";
+        String sql8= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM non_revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=10 and year(flight_date)=2015";
+         Connection koneksi = new koneksi().getConnection();
+        //Connection koneksi1 = new koneksi().getConnection();
+        //Connection koneksi2 = new koneksi().getConnection();
         try {
             Statement stat = koneksi.createStatement();
-            Statement stat1 = koneksi1.createStatement();
-            Statement stat2 = koneksi2.createStatement();
+            Statement stat1 = koneksi.createStatement();
+            Statement stat2 = koneksi.createStatement();
+            Statement stat3 = koneksi.createStatement();
+            Statement stat4 = koneksi.createStatement();
+            Statement stat5 = koneksi.createStatement();
+            Statement stat6 = koneksi.createStatement();
+            Statement stat7 = koneksi.createStatement();
+            Statement stat8 = koneksi.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             ResultSet hasil1 = stat1.executeQuery(sql1);
             ResultSet hasil2 = stat2.executeQuery(sql2);
+            ResultSet hasil3 = stat3.executeQuery(sql3);
+            ResultSet hasil4 = stat4.executeQuery(sql4);
+            ResultSet hasil5 = stat5.executeQuery(sql5);
+            ResultSet hasil6 = stat6.executeQuery(sql6);
+            ResultSet hasil7 = stat7.executeQuery(sql7);
+            ResultSet hasil8 = stat8.executeQuery(sql8);
             while (hasil.next()) {
             Cok = hasil.getInt(1);
             } 
             while (hasil1.next()) {
-           Cak = hasil1.getInt(1);
+            Cak = hasil1.getInt(1);
             } 
             while (hasil2.next()) {
             Cik = hasil2.getInt(1);
+           }
+            while (hasil3.next()) {
+            a = hasil3.getInt(1);
+            b = (int) floor(hasil3.getInt(2)/60);
+           }
+            while (hasil4.next()) {
+            c = hasil4.getInt(1);
+            d = (int) floor(hasil4.getInt(2)/60);
+           }
+            while (hasil5.next()) {
+            f = hasil5.getInt(1);
+            g = (int) floor(hasil5.getInt(2)/60);
+           } 
+            while (hasil6.next()) {
+            aa = hasil6.getInt(1);
+            bb = (int) floor(hasil6.getInt(2)/60);
+           }
+            while (hasil7.next()) {
+            cc = hasil7.getInt(1);
+            dd = (int) floor(hasil7.getInt(2)/60);
+           }
+            while (hasil8.next()) {
+            ff = hasil8.getInt(1);
+            gg = (int) floor(hasil8.getInt(2)/60);
            } 
             koneksi.close();
-            koneksi1.close();
-            koneksi2.close();
+           System.out.print(Integer.toString(aa));
+            //koneksi1.close();
+            //koneksi2.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Menampilkan data GAGAL", "Informasi", JOptionPane.INFORMATION_MESSAGE);
             }
-       
+       int totrev=a+b,totrev1=c+d,totrev2=f+g;
+       int totnonrev=aa+bb,totnonrev1=cc+dd,totnonrev2=ff+gg;
         Object rowData[][] = { { 1, "A/C days in service",Integer.toString(Cok) , Integer.toString(Cak), Integer.toString(Cik),Integer.toString(Cok+Cak+Cik)  },
-                           { 2, "Flying Hours - Total", "", "", "", "" },
-                           { 3, "Flying Hours - Revenue", "", "", "", "" },
-                           { 4, "Flying Hours - Non Revenue", "", "", "", "" },
+                           { 2, "Flying Hours - Total", Integer.toString(totnonrev2+totrev2), Integer.toString(totnonrev1+totrev1), Integer.toString(totnonrev+totrev),Integer.toString(totnonrev+totnonrev1+totnonrev2+totrev+totrev1+totrev2) },
+                           { 3, "Flying Hours - Revenue", Integer.toString(totrev2), Integer.toString(totrev1), Integer.toString(totrev),Integer.toString(totrev+totrev1+totrev2) },
+                           { 4, "Flying Hours - Non Revenue", Integer.toString(totnonrev2), Integer.toString(totnonrev1), Integer.toString(totnonrev),Integer.toString(totnonrev+totnonrev1+totnonrev2) },
                            { 5, "Flying Hours per days", "", "", "", "" },
                            { 7, "Cycle - Total", "", "", "", "" },
                            { 8, "Cycle - Non Revenue", "", "", "", "" },
