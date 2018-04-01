@@ -12,12 +12,16 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import org.jfree.ui.RefineryUtilities;
 
 public class form_data_barang extends javax.swing.JFrame {
-
+    public static String acreg="PK-LAF";
+    public static int month;
+    public static int year;
     private DefaultTableModel tabmode;
     //DefaultTableModel tabel = new DefaultTableModel();
     Connection con;
@@ -90,13 +94,9 @@ System.out.println(e.getMessage());
         scrollPane1 = new java.awt.ScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        b_Simpan = new javax.swing.JButton();
         b_Simpan1 = new javax.swing.JButton();
-        c_bln = new javax.swing.JComboBox<>();
         c_bln1 = new javax.swing.JComboBox<>();
-        c_thn = new javax.swing.JComboBox<>();
         c_thn1 = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         ACreg = new javax.swing.JComboBox();
@@ -173,16 +173,7 @@ System.out.println(e.getMessage());
 
         jLabel3.setText("A/C Regristration");
 
-        jLabel5.setText("Tanggal awal");
-
         jLabel6.setText("Tanggal akhir");
-
-        b_Simpan.setText("Cari");
-        b_Simpan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_SimpanActionPerformed(evt);
-            }
-        });
 
         b_Simpan1.setText("Download PDF");
         b_Simpan1.addActionListener(new java.awt.event.ActionListener() {
@@ -191,18 +182,19 @@ System.out.println(e.getMessage());
             }
         });
 
-        c_bln.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bulan", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
-
         c_bln1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bulan", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
-
-        c_thn.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tahun", "2019", "2018", "2017", "2016", "2015", "2014", "2013" }));
-        c_thn.addActionListener(new java.awt.event.ActionListener() {
+        c_bln1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                c_thnActionPerformed(evt);
+                c_bln1ActionPerformed(evt);
             }
         });
 
         c_thn1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tahun", "2019", "2018", "2017", "2016", "2015", "2014", "2013" }));
+        c_thn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                c_thn1ActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Periode TKU 3 bulan");
 
@@ -226,38 +218,30 @@ System.out.println(e.getMessage());
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(b_Simpan1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ACreg, 0, 207, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(c_bln1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(c_thn1, 0, 68, Short.MAX_VALUE)
-                                    .addComponent(c_thn, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(19, 19, 19))
+                                .addComponent(c_thn1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(49, 49, 49))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(b_Simpan, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(b_Simpan1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(c_bln, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(c_bln1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(ACreg, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49))
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(68, 68, 68))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,22 +250,15 @@ System.out.println(e.getMessage());
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ACreg, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(c_bln, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(c_thn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(c_bln1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(c_thn1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(1, 1, 1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(b_Simpan)
-                    .addComponent(b_Simpan1))
+                .addGap(32, 32, 32)
+                .addComponent(b_Simpan1)
                 .addContainerGap())
         );
 
@@ -369,7 +346,7 @@ System.out.println(e.getMessage());
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(pirep, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
                     .addComponent(OSbutton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         tabellion.setModel(new javax.swing.table.DefaultTableModel(
@@ -417,18 +394,15 @@ System.out.println(e.getMessage());
         System.exit(0);
     }//GEN-LAST:event_formWindowClosed
 
-    private void b_SimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_SimpanActionPerformed
-
-    }//GEN-LAST:event_b_SimpanActionPerformed
-
     private void b_Simpan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_Simpan1ActionPerformed
         // TODO add your handling code here:
+      // System.out.print(acreg+"\n");
     }//GEN-LAST:event_b_Simpan1ActionPerformed
 
     private void b_Simpan5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_Simpan5ActionPerformed
-        DefaultCategoryDataset piedata=new DefaultCategoryDataset();
-        piedata.setValue(1, "lion", "Tires and weels");
-        piedata.setValue(2, "lion", "Apu indicating System");
+      /*  DefaultCategoryDataset piedata=new DefaultCategoryDataset();
+        piedata.setValue(1, "warna", "Tires and weels");
+        piedata.setValue(2, "warna", "Apu indicating System");
         piedata.setValue(8, "warna", "taxi and runway turn off lights");
         piedata.setValue(1, "warna", "exhaust Gas temperature indicating");
         piedata.setValue(4, "warna", "Flight data recorder (FDR)");
@@ -437,20 +411,21 @@ System.out.println(e.getMessage());
         piedata.setValue(7, "warna", "Zone Temperature Control and Indication");
         piedata.setValue(5, "warna", "Traffic Alert and Collision Avoidance System (TCAS)");
 
-        JFreeChart chart =ChartFactory.createBarChart("Judul","xxx", "yyy", piedata);
+        JFreeChart chart =ChartFactory.createStackedBarChart("Judul","xxx", "yyy", piedata);
         ChartFrame frame =new ChartFrame ("framechart",chart);
         frame.setVisible(true);
-        frame.setBounds(900, 200, 500, 500);
+        frame.setBounds(900, 200, 500, 500);*/
         // TODO add your handling code here:
+        final StackedBarChart topten = new StackedBarChart("Top Ten Pirep");
+        topten.pack();
+        RefineryUtilities.centerFrameOnScreen(topten);
+        topten.setVisible(true);
+        topten.setBounds(900, 200, 500, 500);
     }//GEN-LAST:event_b_Simpan5ActionPerformed
 
     private void b_Simpan2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_Simpan2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_b_Simpan2ActionPerformed
-
-    private void c_thnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c_thnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_c_thnActionPerformed
 
     private void pirepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pirepActionPerformed
 tampil_barang() ;  
@@ -464,12 +439,27 @@ tampil_barang() ;
     }//GEN-LAST:event_OSbuttonActionPerformed
 
     private void ACregActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ACregActionPerformed
-        // TODO add your handling code here:
+       JComboBox<String> combo = (JComboBox<String>) evt.getSource();
+        acreg = (String) combo.getSelectedItem();
     }//GEN-LAST:event_ACregActionPerformed
 
     private void ACregItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ACregItemStateChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_ACregItemStateChanged
+
+    private void c_bln1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c_bln1ActionPerformed
+        // TODO add your handling code here:
+        JComboBox<String> combo = (JComboBox<String>) evt.getSource();
+         String bulan= (String) combo.getSelectedItem();
+         month=Integer.parseInt(bulan);
+    }//GEN-LAST:event_c_bln1ActionPerformed
+
+    private void c_thn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_c_thn1ActionPerformed
+        // TODO add your handling code here:
+        JComboBox<String> combo = (JComboBox<String>) evt.getSource();
+         String tahun= (String) combo.getSelectedItem();
+         year=Integer.parseInt(tahun);
+    }//GEN-LAST:event_c_thn1ActionPerformed
     
     
     /**
@@ -515,20 +505,16 @@ tampil_barang() ;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox ACreg;
     private javax.swing.JButton OSbutton;
-    private javax.swing.JButton b_Simpan;
     private javax.swing.JButton b_Simpan1;
     private javax.swing.JButton b_Simpan2;
     private javax.swing.JButton b_Simpan5;
-    private javax.swing.JComboBox<String> c_bln;
     private javax.swing.JComboBox<String> c_bln1;
-    private javax.swing.JComboBox<String> c_thn;
     private javax.swing.JComboBox<String> c_thn1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
@@ -551,25 +537,60 @@ tampil_barang() ;
     // End of variables declaration//GEN-END:variables
 
    private void OS() {
-     int Cok = 0,Cak = 0,Cik = 0,a=0,b=0,c=0,d=0,f=0,g=0,aa=0,bb=0,cc=0,dd=0,ff=0,gg=0;
+     int Cok = 0,Cak = 0,Cik = 0,a=0,b=0,c=0,d=0,f=0,g=0,aa=0,bb=0,cc=0,dd=0,ff=0,gg=0,z=0,y=0,x=0;
      int asa=0,asi=0,asu=0,asa1=0,asi1=0,asu1=0;
+     int pir1=0,pir2=0,pir3=0;
+     int bulan_end=month,bulan_teng=0,bulan_awal=0;
+     int year_teng=0,year_awal=0;
+     int cek1= bulan_end-1;
+     int cek2= bulan_end-2;
+     String bulan_akhir = null;
+     if(month !=0){
+     if(cek2<=0){
+     year_awal=year-1;
+     bulan_awal=12+cek2;
+     }
+     else{
+     bulan_awal=month-2;
+     year_awal=year;
+     }
+     if(cek1<=0){
+     year_teng=year-1;
+     bulan_teng=12+cek1;
+     }
+     else{
+     bulan_teng=month-1;
+     year_teng=year;
+     }
+     }
      JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        String sql = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=10 and year(flight_date)=2015";
-        String sql1 = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=11 and year(flight_date)=2015";
-        String sql2 = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=12 and year(flight_date)=2015";
-        String sql3= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=12 and year(flight_date)=2015";
-        String sql4= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=11 and year(flight_date)=2015";
-        String sql5= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=10 and year(flight_date)=2015";
-        String sql6= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM non_revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=12 and year(flight_date)=2015";
-        String sql7= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM non_revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=11 and year(flight_date)=2015";
-        String sql8= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM non_revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=10 and year(flight_date)=2015";
-        String sql9= "SELECT SUM(cycles) as totalcycles FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=12 and year(flight_date)=2015";
-        String sql10= "SELECT SUM(cycles) as totalcycles FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=11 and year(flight_date)=2015";
-        String sql11= "SELECT SUM(cycles) as totalcycles FROM revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=10 and year(flight_date)=2015";
-        String sql12="SELECT SUM(cycles) as totalcycles FROM NON_revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=12 and year(flight_date)=2015";
-        String sql13="SELECT SUM(cycles) as totalcycles FROM NON_revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=11 and year(flight_date)=2015";
-        String sql14="SELECT SUM(cycles) as totalcycles FROM NON_revenue_data where aaaa=\"PK-LAJ\" and month(flight_date)=10 and year(flight_date)=2015";
+        String sql = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_awal+" and year(flight_date)="+year_awal+"";
+        String sql1 = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_teng+" and year(flight_date)="+year_teng+"";
+        String sql2 = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_awal+" and year(flight_date)="+year+"";
+        String sql3= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_end+" and year(flight_date)="+year+"";
+        String sql4= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_teng+" and year(flight_date)="+year_teng+"";
+        String sql5= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM revenue_data where aaaa='"+acreg+"'and month(flight_date)="+bulan_awal+" and year(flight_date)="+year_awal+"";
+        String sql6= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM non_revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_end+" and year(flight_date)="+year+"";
+        String sql7= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM non_revenue_data where aaaa='"+acreg+"'and month(flight_date)="+bulan_teng+" and year(flight_date)="+year_teng+"";
+        String sql8= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM non_revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_awal+" and year(flight_date)="+year_awal+"";
+        String sql9= "SELECT SUM(cycles) as totalcycles FROM revenue_data where aaaa='"+acreg+"'and month(flight_date)="+bulan_end+" and year(flight_date)="+year+"";
+        String sql10= "SELECT SUM(cycles) as totalcycles FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_teng+" and year(flight_date)="+year_teng+"";
+        String sql11= "SELECT SUM(cycles) as totalcycles FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_awal+" and year(flight_date)="+year_awal+"";
+        String sql12="SELECT SUM(cycles) as totalcycles FROM NON_revenue_data where aaaa='"+acreg+"'and month(flight_date)="+bulan_end+" and year(flight_date)="+year+"";
+        String sql13="SELECT SUM(cycles) as totalcycles FROM NON_revenue_data where aaaa='"+acreg+"'and month(flight_date)="+bulan_teng+" and year(flight_date)="+year_teng+"";
+        String sql14="SELECT SUM(cycles) as totalcycles FROM NON_revenue_data where aaaa='"+acreg+"'and month(flight_date)="+bulan_awal+" and year(flight_date)="+year_awal+"";
+        String sql15="SELECT count(*) as totaldelay FROM delay_data where ac_REG='"+acreg+"'and month(date)="+bulan_end+" and year(date)="+year+"";
+        String sql16="SELECT count(*) as totaldelay FROM delay_data where ac_REG='"+acreg+"' and month(date)="+bulan_teng+"  and year(date)="+year_teng+"";
+        String sql17="SELECT count(*) as totaldelay FROM delay_data where ac_REG='"+acreg+"'and month(date)="+bulan_awal+"  and year(date)="+year_awal+"";
+        String sql18="SELECT count(*) FROM pirep_data WHERE AIRCRAFT_REG='"+acreg+"'and month(dates)="+bulan_end+"  and year(dates)="+year+"";
+        String sql19="SELECT count(*) FROM pirep_data WHERE AIRCRAFT_REG='"+acreg+"'and month(dates)="+bulan_teng+"  and year(dates)="+year_teng+"";
+        String sql20="SELECT count(*) FROM pirep_data WHERE AIRCRAFT_REG='"+acreg+"'and month(dates)="+bulan_awal+"  and year(dates)="+year_awal+"";
+       // System.out.print(acreg+"\n");
+       //System.out.print(month+"\n");
+       // System.out.print(year+"\n");
+       // System.out.print(sql20+"\n");
+        
         Connection koneksi = new koneksi().getConnection();
         //Connection koneksi1 = new koneksi().getConnection();
         //Connection koneksi2 = new koneksi().getConnection();
@@ -589,6 +610,12 @@ tampil_barang() ;
             Statement stat12 = koneksi.createStatement();
             Statement stat13 = koneksi.createStatement();
             Statement stat14 = koneksi.createStatement();
+            Statement stat15 = koneksi.createStatement();
+            Statement stat16 = koneksi.createStatement();
+            Statement stat17 = koneksi.createStatement();
+            Statement stat18 = koneksi.createStatement();
+            Statement stat19 = koneksi.createStatement();
+            Statement stat20 = koneksi.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             ResultSet hasil1 = stat1.executeQuery(sql1);
             ResultSet hasil2 = stat2.executeQuery(sql2);
@@ -603,7 +630,13 @@ tampil_barang() ;
             ResultSet hasil11 = stat11.executeQuery(sql11);
             ResultSet hasil12 = stat12.executeQuery(sql12);
             ResultSet hasil13 = stat13.executeQuery(sql13);
-            ResultSet hasil14 = stat14.executeQuery(sql14);
+            ResultSet hasil14 = stat14.executeQuery(sql14); 
+            ResultSet hasil15 = stat15.executeQuery(sql15);
+            ResultSet hasil16 = stat16.executeQuery(sql16);
+            ResultSet hasil17 = stat17.executeQuery(sql17); 
+            ResultSet hasil18 = stat18.executeQuery(sql19);
+            ResultSet hasil19 = stat19.executeQuery(sql18);
+            ResultSet hasil20 = stat20.executeQuery(sql20); 
             if (hasil.next()) {
             Cok = hasil.getInt(1);
             } 
@@ -655,6 +688,24 @@ tampil_barang() ;
             if (hasil14.next()) {
             asu1 = hasil14.getInt(1);
            }
+            if (hasil15.next()) {
+            z = hasil15.getInt(1);
+            } 
+            if (hasil16.next()) {
+            y = hasil16.getInt(1);
+            } 
+            if (hasil17.next()) {
+            x = hasil17.getInt(1);
+           }
+            if (hasil18.next()) {
+            pir1 = hasil18.getInt(1);
+            } 
+            if (hasil19.next()) {
+            pir2 = hasil19.getInt(1);
+            } 
+            if (hasil20.next()) {
+            pir3 = hasil20.getInt(1);
+           }
             koneksi.close();
            //System.out.print(Integer.toString(aa));
             //koneksi1.close();
@@ -682,14 +733,124 @@ tampil_barang() ;
                            { 8, "Cycle - Non Revenue", Integer.toString(asu1),Integer.toString(asi1), Integer.toString(asa1), Integer.toString(asa1+asi1+asu1) },
                            { 9, "Cycle per days", String.valueOf(round((asu1+asu)/(double)Cok*10.0)/10.0),String.valueOf(round((asi+asi1)/(double)Cak*10.0)/10.0), String.valueOf(round((asa+asa1)/(double)Cik*10.0)/10.0),String.valueOf(round((asa+asi+asu+asa1+asi1+asu1)/(double)(Cok+Cak+Cik)*10.0)/10.0)   },
                            { 10, "Flying hours per Cycle", String.valueOf(round(tes/tas*10.0)/10.0), String.valueOf(round(tes1/tas1*10.0)/10.0), String.valueOf(round(tes2/tas2*10.0)/10.0), String.valueOf(round(tottes/tottas*10.0)/10.0) },
-                           { 11, "Technical Delays > 15 Min", "", "", "", "" },
-                           { 12, "Delay Rate/100 Rev. Cycle", "", "", "", "" },
-                           { 13, "Dispatch Reliability (%)", "", "", "", "" },
-                           { 14, "Pilot reports (PIREPS)", "", "", "", "" },
-                           { 15, "Pirep Rate/1000 Flying Hours", "", "", "", "" },
+                           { 11, "Technical Delays > 15 Min", Integer.toString(x) , Integer.toString(y), Integer.toString(z),Integer.toString(x+y+z)},
+                           { 12, "Delay Rate/100 Rev. Cycle", String.valueOf(round(x/(double)asu*10000.0)/100.0) , String.valueOf(round(y/(double)asi*10000.0)/100.0), String.valueOf(round(z/(double)asa*10000.0)/100.0),String.valueOf(round((((x/(double)asu*100))+((y/(double)asi*100))+((z/(double)asa*100)))/3*100.0)/100.0)},
+                           { 13, "Dispatch Reliability (%)", String.valueOf(round((100-(x/(double)asu*100))*100.0)/100.0) , String.valueOf(round((100-(y/(double)asi*100.0))*100.0)/100.0), String.valueOf(round((100-(z/(double)asa*100.0))*100.0)/100.0),String.valueOf(round((300-((x/(double)asu*100)+(y/(double)asi*100)+(z/(double)asa*100)))/3*100.0)/100.0)},
+                           { 14, "Pilot reports (PIREPS)", Integer.toString(pir3) , Integer.toString(pir2), Integer.toString(pir1),Integer.toString(pir3+pir2+pir1) },
+                           { 15, "Pirep Rate/1000 Flying Hours", "pirep", "pirep", "pirep", "pirep" },
     };
-    
-    Object columnNames[] = { "No", "Description", "oktober-15", "november-15", "december-15","total" };
+   
+   if(bulan_end==12){
+   bulan_akhir="December";
+   }
+   else if(bulan_end==11){
+   bulan_akhir="November";
+   }
+   else if(bulan_end==10){
+   bulan_akhir="October";
+   }
+     else if(bulan_end==9){
+   bulan_akhir="September";
+   }
+    else if(bulan_end==8){
+   bulan_akhir="August";
+   }
+     else if(bulan_end==7){
+   bulan_akhir="July";
+   }
+     else if(bulan_end==6){
+   bulan_akhir="Juny";
+   }
+     else if(bulan_end==5){
+   bulan_akhir="May";
+   }
+     else if(bulan_end==4){
+   bulan_akhir="April";
+   }
+     else if(bulan_end==3){
+   bulan_akhir="March";
+   }
+     else if(bulan_end==2){
+   bulan_akhir="February";
+   }
+     else if(bulan_end==1){
+   bulan_akhir="January";
+   }
+   String bulan_mid=null;
+   if(bulan_teng==12){
+   bulan_mid="December";
+   }
+   else if(bulan_teng==11){
+   bulan_mid="November";
+   }
+   else if(bulan_teng==10){
+   bulan_mid="October";
+   }
+     else if(bulan_teng==9){
+   bulan_mid="September";
+   }
+    else if(bulan_teng==8){
+   bulan_mid="August";
+   }
+     else if(bulan_teng==7){
+   bulan_mid="July";
+   }
+     else if(bulan_teng==6){
+   bulan_mid="Juny";
+   }
+     else if(bulan_teng==5){
+   bulan_mid="May";
+   }
+     else if(bulan_teng==4){
+   bulan_mid="April";
+   }
+     else if(bulan_teng==3){
+   bulan_mid="March";
+   }
+     else if(bulan_teng==2){
+   bulan_mid="February";
+   }
+     else if(bulan_teng==1){
+   bulan_mid="January";
+   }
+   String bulan_start=null;
+   if(bulan_awal==12){
+   bulan_start="December";
+   }
+   else if(bulan_awal==11){
+   bulan_start="November";
+   }
+   else if(bulan_awal==10){
+   bulan_start="October";
+   }
+     else if(bulan_awal==9){
+   bulan_start="September";
+   }
+    else if(bulan_awal==8){
+   bulan_start="August";
+   }
+     else if(bulan_awal==7){
+   bulan_start="July";
+   }
+     else if(bulan_awal==6){
+   bulan_start="Juny";
+   }
+     else if(bulan_awal==5){
+   bulan_start="May";
+   }
+     else if(bulan_awal==4){
+   bulan_start="April";
+   }
+     else if(bulan_awal==3){
+   bulan_start="March";
+   }
+     else if(bulan_awal==2){
+   bulan_start="February";
+   }
+     else if(bulan_awal==1){
+   bulan_start="January";
+   }
+    Object columnNames[] = { "No", "Description", bulan_start+"-"+String.valueOf(year_awal), bulan_mid+"-"+String.valueOf(year_teng), bulan_akhir+"-"+String.valueOf(year),"total" };
     JTable table = new JTable(rowData, columnNames);
 
     
