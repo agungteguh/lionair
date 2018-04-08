@@ -1,6 +1,23 @@
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.Image;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.DefaultFontMapper;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfTemplate;
+import com.lowagie.text.pdf.PdfWriter;
 import java.awt.BorderLayout;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import static java.lang.Math.floor;
 import static java.lang.Math.round;
+import java.net.MalformedURLException;
 import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -12,8 +29,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import org.jfree.ui.RefineryUtilities;
@@ -22,6 +44,7 @@ public class form_data_barang extends javax.swing.JFrame {
     public static String acreg="PK-LAF";
     public static int month;
     public static int year;
+    public static boolean cekpdf=false;
     private DefaultTableModel tabmode;
     //DefaultTableModel tabel = new DefaultTableModel();
     Connection con;
@@ -53,6 +76,7 @@ public class form_data_barang extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Menampilkan data GAGAL", "Informasi", JOptionPane.INFORMATION_MESSAGE);
             }
+        
 
     }
      /*public form_data_barang() {
@@ -307,6 +331,11 @@ System.out.println(e.getMessage());
         });
 
         jButton3.setText("Pirep Data");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         OSbutton.setText("Operation Summary");
         OSbutton.addActionListener(new java.awt.event.ActionListener() {
@@ -396,7 +425,12 @@ System.out.println(e.getMessage());
 
     private void b_Simpan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_Simpan1ActionPerformed
         // TODO add your handling code here:
-      // System.out.print(acreg+"\n");
+        cekpdf=true;
+        OS();
+        
+     
+        
+        
     }//GEN-LAST:event_b_Simpan1ActionPerformed
 
     private void b_Simpan5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_Simpan5ActionPerformed
@@ -424,17 +458,28 @@ System.out.println(e.getMessage());
     }//GEN-LAST:event_b_Simpan5ActionPerformed
 
     private void b_Simpan2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_Simpan2ActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here: 
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JLabel label = new JLabel();
+        //JLabel image = new JLabel(new ImageIcon("imageName.png"));
+        label.setIcon(new ImageIcon("D:\\Project\\cover.png"));
+       // frame.add(scrollPane, BorderLayout.CENTER);
+        frame.setSize(600,450 );
+        frame.setVisible(true);
+        frame.add(label);
+        //validate();
     }//GEN-LAST:event_b_Simpan2ActionPerformed
 
     private void pirepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pirepActionPerformed
-tampil_barang() ;  
+        tampil_barang() ;  
         
      
     }//GEN-LAST:event_pirepActionPerformed
 
     private void OSbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OSbuttonActionPerformed
-       OS() ; 
+        cekpdf=false;
+        OS() ; 
     // TODO add your handling code here:
     }//GEN-LAST:event_OSbuttonActionPerformed
 
@@ -460,6 +505,10 @@ tampil_barang() ;
          String tahun= (String) combo.getSelectedItem();
          year=Integer.parseInt(tahun);
     }//GEN-LAST:event_c_thn1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
     
     
     /**
@@ -535,8 +584,10 @@ tampil_barang() ;
     private java.awt.ScrollPane scrollPane1;
     private javax.swing.JTable tabellion;
     // End of variables declaration//GEN-END:variables
-
+ 
+ 
    private void OS() {
+    
      int Cok = 0,Cak = 0,Cik = 0,a=0,b=0,c=0,d=0,f=0,g=0,aa=0,bb=0,cc=0,dd=0,ff=0,gg=0,z=0,y=0,x=0;
      int asa=0,asi=0,asu=0,asa1=0,asi1=0,asu1=0;
      int pir1=0,pir2=0,pir3=0;
@@ -567,7 +618,7 @@ tampil_barang() ;
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         String sql = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_awal+" and year(flight_date)="+year_awal+"";
         String sql1 = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_teng+" and year(flight_date)="+year_teng+"";
-        String sql2 = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_awal+" and year(flight_date)="+year+"";
+        String sql2 = "SELECT count(DISTINCT flight_date) as jumlah FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_end+" and year(flight_date)="+year+"";
         String sql3= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_end+" and year(flight_date)="+year+"";
         String sql4= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM revenue_data where aaaa='"+acreg+"' and month(flight_date)="+bulan_teng+" and year(flight_date)="+year_teng+"";
         String sql5= "SELECT SUM(flight_hours) as totaljam,SUM(flight_minutes) AS totalmenit FROM revenue_data where aaaa='"+acreg+"'and month(flight_date)="+bulan_awal+" and year(flight_date)="+year_awal+"";
@@ -852,14 +903,111 @@ tampil_barang() ;
    }
     Object columnNames[] = { "No", "Description", bulan_start+"-"+String.valueOf(year_awal), bulan_mid+"-"+String.valueOf(year_teng), bulan_akhir+"-"+String.valueOf(year),"total" };
     JTable table = new JTable(rowData, columnNames);
+    if(cekpdf){
+    String path ="";
+        JFileChooser j = new JFileChooser();
+        j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int xa=j.showSaveDialog(this);
+        if(xa==JFileChooser.APPROVE_OPTION){
+            path = j.getSelectedFile().getPath();
+        }
+       // System.out.print(path);
+        Document doc = new Document();
+        //PdfWriter writer = null;
+        StackedBarChart chart = new StackedBarChart("Top Ten Pirep");
+        try {
+            PdfWriter.getInstance(doc, new FileOutputStream(path+"/"+acreg+"-"+bulan_akhir+"-"+String.valueOf(year)+".pdf"));
+            ///writer = PdfWriter.getInstance(doc, new FileOutputStream(path+"/table.pdf"));
+            PdfPTable pdf=new PdfPTable(6);
+        //document.add(new Paragraph("Sample 1: This is simple image demo."));
+        //img.setAbsolutePosition(0, 0);
+          doc.open();
+            Image img;
+         try {
+             img = Image.getInstance("D:\\Project\\cover.png");
+             img.scaleAbsolute(550,750);
+             doc.add(img);
+         } catch (BadElementException ex) {
+             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (IOException ex) {
+             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (DocumentException ex) {
+             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+         }
+            doc.newPage();
 
-    
-    
+       // JFreeChart crut =ChartFactory.createStackedBarChart("Judul","xxx", "yyy", piedata);
+        
+           // PdfContentByte contentByte = writer.getDirectContent();
+            //PdfTemplate template = contentByte.createTemplate(200, 200);
+           // Graphics2D graphics2d = template.createGraphics(200, 200,
+		//			new DefaultFontMapper());
+           // Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 200,
+			//		200);
+                                        
+            
+            chart.pack();
+            RefineryUtilities.centerFrameOnScreen(chart);
+            //chart.setVisible(true);
+            chart.setBounds(900, 200, 500, 500);
+            
+            Image gambar;
+         try {
+             gambar = Image.getInstance("D:\\Project\\grafik.png");
+             gambar.scaleAbsolute(550,750);
+             doc.add(gambar);
+         } catch (BadElementException ex) {
+             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (IOException ex) {
+             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (DocumentException ex) {
+             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+         }
+            
+            //chart.dispose();
+            //crut.draw(graphics2d, rectangle2d);
+          //  graphics2d.dispose();
+            //java.awt.Image ancok = chart.createImage(100, 100);
+            //contentByte.addTemplate(template, 0, 0);
+            doc.newPage();
+            pdf.addCell("No");
+            pdf.addCell("Description");
+            pdf.addCell(bulan_start+"-"+String.valueOf(year_awal));
+            pdf.addCell(bulan_mid+"-"+String.valueOf(year_teng));
+            pdf.addCell(bulan_akhir+"-"+String.valueOf(year));
+            pdf.addCell("Total");
+            
+            for(int ij=0;ij<table.getRowCount();ij++){
+                String nom=table.getValueAt(ij,0).toString();
+                String deskripsi=table.getValueAt(ij,1).toString();
+                String tgl1=table.getValueAt(ij,2).toString();
+                String tgl2=table.getValueAt(ij,3).toString();
+                String tgl3=table.getValueAt(ij,4).toString();
+                String sum=table.getValueAt(ij,5).toString();
+                
+                pdf.addCell(nom);
+                pdf.addCell(deskripsi);
+                pdf.addCell(tgl1);
+                pdf.addCell(tgl2);
+                pdf.addCell(tgl3);
+                pdf.addCell(sum);
+            }
+           // doc.newPage();
+            doc.add(pdf);
+                    
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            doc.close();
+    }
+    else{
     JScrollPane scrollPane = new JScrollPane(table);
     frame.add(scrollPane, BorderLayout.CENTER);
     frame.setSize(1000,300 );
     frame.setVisible(true);
-
+    }
     
   }
 }
