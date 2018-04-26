@@ -1,8 +1,12 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GradientPaint;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,6 +14,7 @@ import static java.lang.Math.floor;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 //import java.util.logging;
 
@@ -19,17 +24,27 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.SubCategoryAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.GroupedStackedBarRenderer;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.title.TextTitle;
 import org.jfree.data.KeyToGroupMap;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.GradientPaintTransformType;
+import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.StandardGradientPaintTransformer;
+import org.jfree.ui.TextAnchor;
 
 /**
  * A simple demonstration application showing how to create a stacked bar chart
@@ -49,7 +64,7 @@ public class StackedBarChart extends ApplicationFrame {
      *
      * @param title  the frame title.
      */
-    public StackedBarChart(final String title) {
+    public StackedBarChart(final String title) throws IOException {
         super(title);
         final CategoryDataset dataset = createDataset();
         final JFreeChart chart = createChart(dataset);
@@ -61,14 +76,41 @@ public class StackedBarChart extends ApplicationFrame {
          OutputStream out = new FileOutputStream("D:\\Project\\grafik.png");
          ChartUtilities.writeChartAsPNG(out,
             chart,
-            550,
-            750);
+            600,
+            400);
 
         } catch (IOException ex) {
             System.err.println("koneksi gagal" +ex.getMessage());
         }
         }
         setContentPane(chartPanel);
+         String yourText = "32-45"+"        " +"49-72"+"        " +"33-45"+"        " +"77-21"+"        " 
+            +"31-31"+"        " +"74-11"+"        " +"21-22"+"        " +"21-61"+"        " +"34-45";
+   final BufferedImage image = ImageIO.read(new File("D:\\Project\\grafik.png"));
+    Graphics graphics = image.getGraphics();
+    //graphics.setColor(Color.LIGHT_GRAY);
+   // graphics.fillRect(0, 0, 200, 50);
+    graphics.setColor(Color.BLACK);
+    graphics.setFont(new Font("Arial", Font.PLAIN, 12));
+    graphics.drawString(yourText, 70, 390);
+    //Graphics2D g2;
+    graphics.drawRect(0, 0, 599, 399);
+    float alpha = (float) 0.3;
+    Color color = new Color(0, 0, 0, alpha); //Red 
+    graphics.setColor(color);
+    graphics.drawLine(60, 280, 60, 395);
+    graphics.drawLine(115, 280, 115, 395);
+    graphics.drawLine(170, 280, 170, 395);
+    graphics.drawLine(225, 280, 225, 395);
+    graphics.drawLine(285, 280, 285, 395);
+    graphics.drawLine(335, 280, 335, 395);
+    graphics.drawLine(390, 280, 390, 395);
+    graphics.drawLine(455, 280, 455, 395);
+    graphics.drawLine(510, 280, 510, 395);
+    graphics.drawLine(575, 280, 575, 395);
+   
+    
+    ImageIO.write(image,  "png", new File("D:\\Project\\grafik.png"));
     }
     
     /**
@@ -272,114 +314,114 @@ public class StackedBarChart extends ApplicationFrame {
             }
       
    if(bulan_end==12){
-   bulan_akhir="December";
+   bulan_akhir="Dec-";
    }
    else if(bulan_end==11){
-   bulan_akhir="November";
+   bulan_akhir="Nov-";
    }
    else if(bulan_end==10){
-   bulan_akhir="October";
+   bulan_akhir="Oct-";
    }
      else if(bulan_end==9){
-   bulan_akhir="September";
+   bulan_akhir="Sep-";
    }
     else if(bulan_end==8){
-   bulan_akhir="August";
+   bulan_akhir="Aug-";
    }
      else if(bulan_end==7){
-   bulan_akhir="July";
+   bulan_akhir="Jul-";
    }
      else if(bulan_end==6){
-   bulan_akhir="Juny";
+   bulan_akhir="Jun-";
    }
      else if(bulan_end==5){
-   bulan_akhir="May";
+   bulan_akhir="May-";
    }
      else if(bulan_end==4){
-   bulan_akhir="April";
+   bulan_akhir="Apr-";
    }
      else if(bulan_end==3){
-   bulan_akhir="March";
+   bulan_akhir="Mar-";
    }
      else if(bulan_end==2){
-   bulan_akhir="February";
+   bulan_akhir="Feb-";
    }
      else if(bulan_end==1){
-   bulan_akhir="January";
+   bulan_akhir="Jan-";
    }
    //String bulan_mid=null;
    if(bulan_teng==12){
-   bulan_mid="December";
+   bulan_mid="Dec-";
    }
    else if(bulan_teng==11){
-   bulan_mid="November";
+   bulan_mid="Nov-";
    }
    else if(bulan_teng==10){
-   bulan_mid="October";
+   bulan_mid="Oct-";
    }
      else if(bulan_teng==9){
-   bulan_mid="September";
+   bulan_mid="Sept-";
    }
     else if(bulan_teng==8){
-   bulan_mid="August";
+   bulan_mid="Aug-";
    }
      else if(bulan_teng==7){
-   bulan_mid="July";
+   bulan_mid="Jul-";
    }
      else if(bulan_teng==6){
-   bulan_mid="Juny";
+   bulan_mid="Jun-";
    }
      else if(bulan_teng==5){
-   bulan_mid="May";
+   bulan_mid="May-";
    }
      else if(bulan_teng==4){
-   bulan_mid="April";
+   bulan_mid="Apr-";
    }
      else if(bulan_teng==3){
-   bulan_mid="March";
+   bulan_mid="Mar-";
    }
      else if(bulan_teng==2){
-   bulan_mid="February";
+   bulan_mid="Feb-";
    }
      else if(bulan_teng==1){
-   bulan_mid="January";
+   bulan_mid="Jan-";
    }
    //String bulan_start=null;
    if(bulan_awal==12){
-   bulan_start="December";
+   bulan_start="Dec-";
    }
    else if(bulan_awal==11){
-   bulan_start="November";
+   bulan_start="Nov-";
    }
    else if(bulan_awal==10){
-   bulan_start="October";
+   bulan_start="Oct-";
    }
      else if(bulan_awal==9){
-   bulan_start="September";
+   bulan_start="Sep-";
    }
     else if(bulan_awal==8){
-   bulan_start="August";
+   bulan_start="Aug-";
    }
      else if(bulan_awal==7){
-   bulan_start="July";
+   bulan_start="Jul-";
    }
      else if(bulan_awal==6){
-   bulan_start="Juny";
+   bulan_start="Jun-";
    }
      else if(bulan_awal==5){
-   bulan_start="May";
+   bulan_start="May-";
    }
      else if(bulan_awal==4){
-   bulan_start="April";
+   bulan_start="Apr-";
    }
      else if(bulan_awal==3){
-   bulan_start="March";
+   bulan_start="Mar-";
    }
      else if(bulan_awal==2){
-   bulan_start="February";
+   bulan_start="Feb-";
    }
      else if(bulan_awal==1){
-   bulan_start="January";
+   bulan_start="Jan-";
    }
    
 
@@ -427,18 +469,21 @@ public class StackedBarChart extends ApplicationFrame {
      * @return A sample chart.
      */
     private JFreeChart createChart(final CategoryDataset dataset) {
-
+        TextTitle my_Chart_title=new TextTitle("Top 10 Pirep "+form_data_barang.acreg, new Font ("Arial", Font.BOLD , 14));
         final JFreeChart chart = ChartFactory.createStackedBarChart(
-            "Top Ten Pirep",  // chart title
-            form_data_barang.acreg,                  // domain axis label
-            "Value",                     // range axis label
+            "Top Ten Pirep "+form_data_barang.acreg,  // chart title
+            "\n\n",                  // domain axis label
+            "",                     // range axis label
             dataset,                     // data
             PlotOrientation.VERTICAL,    // the plot orientation
             true,                        // legend
             true,                        // tooltips
             false                        // urls
         );
-        
+        chart.setTitle(my_Chart_title);
+        chart.getTitle().setPadding(2, 2, 5, 2);
+        //chart.setBackgroundPaint(Color.white);
+       // chart.getTitle().setFont("SansSerif", Font.BOLD, 10);
         GroupedStackedBarRenderer renderer = new GroupedStackedBarRenderer();
         KeyToGroupMap map = new KeyToGroupMap("G1");
         map.mapKeyToGroup(bulan_start+"(1)", "G1");
@@ -470,7 +515,7 @@ public class StackedBarChart extends ApplicationFrame {
         map.mapKeyToGroup(bulan_end+"(9)", "G9");
         renderer.setSeriesToGroupMap(map); 
         
-        renderer.setItemMargin(0.0);
+        renderer.setItemMargin(-3);
         Paint p1 = new GradientPaint(
             0.0f, 0.0f, new Color(0x22, 0x22, 0xFF), 0.0f, 0.0f, new Color(0x88, 0x88, 0xFF)
         );
@@ -485,8 +530,8 @@ public class StackedBarChart extends ApplicationFrame {
         renderer.setSeriesPaint(8, p1);
         
          
-        Paint p2 = new GradientPaint(
-            0.0f, 0.0f, new Color(0x22, 0xFF, 0x22), 0.0f, 0.0f, new Color(0x88, 0xFF, 0x88)
+        Paint p2 =  new GradientPaint(
+            0.0f, 0.0f, new Color(0xFF, 0x22, 0x22), 0.0f, 0.0f, new Color(0xFF, 0x88, 0x88)
         );
         renderer.setSeriesPaint(9, p2); 
         renderer.setSeriesPaint(10, p2); 
@@ -499,7 +544,7 @@ public class StackedBarChart extends ApplicationFrame {
         renderer.setSeriesPaint(17, p2);
         
         Paint p3 = new GradientPaint(
-            0.0f, 0.0f, new Color(0xFF, 0x22, 0x22), 0.0f, 0.0f, new Color(0xFF, 0x88, 0x88)
+            0.0f, 0.0f, new Color(0x22, 0xFF, 0x22), 0.0f, 0.0f, new Color(0x88, 0xFF, 0x88)
         );
         renderer.setSeriesPaint(18, p3);
         renderer.setSeriesPaint(19, p3);
@@ -513,8 +558,15 @@ public class StackedBarChart extends ApplicationFrame {
         renderer.setGradientPaintTransformer(
             new StandardGradientPaintTransformer(GradientPaintTransformType.HORIZONTAL)
         );
-        
-       // SubCategoryAxis domainAxis = new SubCategoryAxis("ATA CATEGORY");
+        renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+        renderer.setBaseItemLabelsVisible(true);
+        ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.OUTSIDE9, 
+                TextAnchor.TOP_CENTER);
+        renderer.setBasePositiveItemLabelPosition(position);
+        renderer.setItemLabelAnchorOffset(-10);
+        //renderer.setItemMargin(.1);
+       // renderer.setMaximumBarWidth(0.01);
+       //SubCategoryAxis domainAxis = new SubCategoryAxis("ATA CATEGORY");
         //domainAxis.setCategoryMargin(0.05);
        // domainAxis.addSubCategory("1");
        // domainAxis.addSubCategory("2");
@@ -524,8 +576,37 @@ public class StackedBarChart extends ApplicationFrame {
       
         
         CategoryPlot plot = (CategoryPlot) chart.getPlot();
+        CategoryAxis xAxis = (CategoryAxis)plot.getDomainAxis();
+        ValueAxis range = plot.getRangeAxis();
+        range.setAxisLineVisible(false);
+        xAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+        xAxis.setMaximumCategoryLabelLines(3);
+       // xAxis.setMinorTickMarksVisible(true);
+       // xAxis.setMaximumCategoryLabelWidthRatio(1);
+        //xAxis.setCategoryLabelPositionOffset(100);
+        Font font3 = new Font("Arial", Font.PLAIN, 10);
+        xAxis.setLabelFont(font3); 
+        xAxis.setTickMarksVisible(false);
+       // xAxis.setFixedDimension(40);
+        LegendTitle legend = chart.getLegend();
+        legend.setItemFont(font3);
+        legend.setPosition(RectangleEdge.TOP);
+        legend.setBorder(0, 0, 0, 0); 
+        legend.setPadding(2, 2, 3, 2);
+       
       // plot.setDomainAxis(domainAxis);
         //plot.setDomainAxisLocation(AxisLocation.TOP_OR_RIGHT);
+        plot.getDomainAxis().setLabelFont(font3);
+        plot.getRangeAxis().setLabelFont(font3);
+       // plot.setRangeZeroBaselineVisible(false);
+        plot.setBackgroundPaint(Color.white);
+        plot.setDomainGridlinePaint(Color.black);
+        plot.setRangeGridlinePaint(Color.black);
+     //   plot.setRangeCrosshairPaint(Color.black);
+       // plot.setRangeMinorGridlinesVisible(true);
+        //plot.setDomainGridlinesVisible(true);
+        plot.setOutlineVisible(false);
+        //plot.setDomainGridlineStroke(stroke);
         plot.setRenderer(renderer);
         plot.setFixedLegendItems(createLegendItems());
         return chart;
@@ -540,9 +621,9 @@ public class StackedBarChart extends ApplicationFrame {
      */
     private LegendItemCollection createLegendItems() {
         LegendItemCollection result = new LegendItemCollection();
-        LegendItem item1 = new LegendItem(bulan_start, new Color(0x22, 0x22, 0xFF));
-        LegendItem item2 = new LegendItem(bulan_mid, new Color(0x22, 0xFF, 0x22));
-        LegendItem item3 = new LegendItem(bulan_akhir, new Color(0xFF, 0x22, 0x22));
+        LegendItem item1 = new LegendItem(bulan_start+year_awal, new Color(0x22, 0x22, 0xFF));
+        LegendItem item2 = new LegendItem(bulan_mid+year_teng, new Color(0xFF, 0x22, 0x22));
+        LegendItem item3 = new LegendItem(bulan_akhir+form_data_barang.year, new Color(0x22, 0xFF, 0x22));
         result.add(item1);
         result.add(item2);
         result.add(item3);

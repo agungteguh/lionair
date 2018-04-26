@@ -1,17 +1,27 @@
 import com.lowagie.text.BadElementException;
+import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.DefaultFontMapper;
 import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,6 +41,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.ImageIcon;
@@ -47,6 +58,7 @@ public class form_data_barang extends javax.swing.JFrame {
     public static boolean cekpdf=false;
     private DefaultTableModel tabmode;
     //DefaultTableModel tabel = new DefaultTableModel();
+    
     Connection con;
     Statement stmt;
     ResultSet rs;
@@ -54,7 +66,7 @@ public class form_data_barang extends javax.swing.JFrame {
         Object[]baris = {"No", "AIRCRAFT_REG2", "DATES", "AML_PAGE_NO", "ATA", "DESCRIPTION", "DISCREPANCIES", "RECTIFICATIONS"};
         tabmode= new DefaultTableModel(null, baris);
         tabellion.setModel(tabmode);
-        String sql = "select * from pirep_data";
+        String sql = "select * from pirep_data where AIRCRAFT_REG='"+acreg+"' ";
         Connection koneksi = new koneksi().getConnection();
         try {
             Statement stat = koneksi.createStatement();
@@ -434,41 +446,99 @@ System.out.println(e.getMessage());
     }//GEN-LAST:event_b_Simpan1ActionPerformed
 
     private void b_Simpan5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_Simpan5ActionPerformed
-      /*  DefaultCategoryDataset piedata=new DefaultCategoryDataset();
-        piedata.setValue(1, "warna", "Tires and weels");
-        piedata.setValue(2, "warna", "Apu indicating System");
-        piedata.setValue(8, "warna", "taxi and runway turn off lights");
-        piedata.setValue(1, "warna", "exhaust Gas temperature indicating");
-        piedata.setValue(4, "warna", "Flight data recorder (FDR)");
-        piedata.setValue(5, "warna", "Ignition Exceter");
-        piedata.setValue(4, "warna", "Flight data recorder (FDR)");
-        piedata.setValue(7, "warna", "Zone Temperature Control and Indication");
-        piedata.setValue(5, "warna", "Traffic Alert and Collision Avoidance System (TCAS)");
-
-        JFreeChart chart =ChartFactory.createStackedBarChart("Judul","xxx", "yyy", piedata);
-        ChartFrame frame =new ChartFrame ("framechart",chart);
-        frame.setVisible(true);
-        frame.setBounds(900, 200, 500, 500);*/
-        // TODO add your handling code here:
-        final StackedBarChart topten = new StackedBarChart("Top Ten Pirep");
-        topten.pack();
-        RefineryUtilities.centerFrameOnScreen(topten);
-        topten.setVisible(true);
-        topten.setBounds(900, 200, 500, 500);
+        try {
+            /*  DefaultCategoryDataset piedata=new DefaultCategoryDataset();
+            piedata.setValue(1, "warna", "Tires and weels");
+            piedata.setValue(2, "warna", "Apu indicating System");
+            piedata.setValue(8, "warna", "taxi and runway turn off lights");
+            piedata.setValue(1, "warna", "exhaust Gas temperature indicating");
+            piedata.setValue(4, "warna", "Flight data recorder (FDR)");
+            piedata.setValue(5, "warna", "Ignition Exceter");
+            piedata.setValue(4, "warna", "Flight data recorder (FDR)");
+            piedata.setValue(7, "warna", "Zone Temperature Control and Indication");
+            piedata.setValue(5, "warna", "Traffic Alert and Collision Avoidance System (TCAS)");
+            
+            JFreeChart chart =ChartFactory.createStackedBarChart("Judul","xxx", "yyy", piedata);
+            ChartFrame frame =new ChartFrame ("framechart",chart);
+            frame.setVisible(true);
+            frame.setBounds(900, 200, 500, 500);*/
+            // TODO add your handling code here:
+            final StackedBarChart topten = new StackedBarChart("Top Ten Pirep");
+            topten.pack();
+            RefineryUtilities.centerFrameOnScreen(topten);
+            topten.setVisible(true);
+            topten.setBounds(900, 200, 500, 500);
+        } catch (IOException ex) {
+            Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_b_Simpan5ActionPerformed
 
     private void b_Simpan2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_Simpan2ActionPerformed
-        // TODO add your handling code here: 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel label = new JLabel();
-        //JLabel image = new JLabel(new ImageIcon("imageName.png"));
-        label.setIcon(new ImageIcon("D:\\Project\\cover.png"));
-       // frame.add(scrollPane, BorderLayout.CENTER);
-        frame.setSize(600,450 );
-        frame.setVisible(true);
-        frame.add(label);
-        //validate();
+        String bulan="";
+        if(month==12){
+   bulan="December-";
+   }
+   else if(month==11){
+   bulan="November-";
+   }
+   else if(month==10){
+   bulan="October-";
+   }
+     else if(month==9){
+   bulan="September-";
+   }
+    else if(month==8){
+   bulan="August-";
+   }
+     else if(month==7){
+   bulan="July-";
+   }
+     else if(month==6){
+   bulan="Juny-";
+   }
+     else if(month==5){
+   bulan="May-";
+   }
+     else if(month==4){
+   bulan="April-";
+   }
+     else if(month==3){
+   bulan="March-";
+   }
+     else if(month==2){
+   bulan="February-";
+   }
+     else if(month==1){
+   bulan="January";
+    }
+        try {
+            // TODO add your handling code here:
+            String yourText = acreg;
+            String yourText1 = bulan+year;
+            final BufferedImage image = ImageIO.read(new File("D:\\Project\\cover_asli.png"));
+            Graphics graphics = image.getGraphics();
+            Color myBlue = new Color(0, 51, 102);
+            graphics.setColor(myBlue);
+            graphics.setFont(new Font("Arial ", Font.BOLD, 16));
+            graphics.drawString(yourText, 615, 308);
+            graphics.setFont(new Font("Arial ", Font.BOLD, 10));
+            graphics.drawString(yourText1, 605, 360);
+            //Graphics2D g2
+            
+            ImageIO.write(image,  "png", new File("D:\\Project\\cover.png"));
+            JFrame frame = new JFrame();
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            JLabel label = new JLabel();
+            //JLabel image = new JLabel(new ImageIcon("imageName.png"));
+            label.setIcon(new ImageIcon("D:\\Project\\cover.png"));
+            // frame.add(scrollPane, BorderLayout.CENTER);
+            frame.setSize(720,500 );
+            frame.setVisible(true);
+            frame.add(label);
+            //validate();
+        } catch (IOException ex) {
+            Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_b_Simpan2ActionPerformed
 
     private void pirepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pirepActionPerformed
@@ -904,103 +974,384 @@ System.out.println(e.getMessage());
     Object columnNames[] = { "No", "Description", bulan_start+"-"+String.valueOf(year_awal), bulan_mid+"-"+String.valueOf(year_teng), bulan_akhir+"-"+String.valueOf(year),"total" };
     JTable table = new JTable(rowData, columnNames);
     if(cekpdf){
-    String path ="";
-        JFileChooser j = new JFileChooser();
-        j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int xa=j.showSaveDialog(this);
-        if(xa==JFileChooser.APPROVE_OPTION){
-            path = j.getSelectedFile().getPath();
-        }
-       // System.out.print(path);
-        Document doc = new Document();
-        //PdfWriter writer = null;
-        StackedBarChart chart = new StackedBarChart("Top Ten Pirep");
         try {
-            PdfWriter.getInstance(doc, new FileOutputStream(path+"/"+acreg+"-"+bulan_akhir+"-"+String.valueOf(year)+".pdf"));
-            ///writer = PdfWriter.getInstance(doc, new FileOutputStream(path+"/table.pdf"));
-            PdfPTable pdf=new PdfPTable(6);
-        //document.add(new Paragraph("Sample 1: This is simple image demo."));
-        //img.setAbsolutePosition(0, 0);
-          doc.open();
-            Image img;
-         try {
-             img = Image.getInstance("D:\\Project\\cover.png");
-             img.scaleAbsolute(550,750);
-             doc.add(img);
-         } catch (BadElementException ex) {
-             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (IOException ex) {
-             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (DocumentException ex) {
-             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
-         }
-            doc.newPage();
-
-       // JFreeChart crut =ChartFactory.createStackedBarChart("Judul","xxx", "yyy", piedata);
-        
-           // PdfContentByte contentByte = writer.getDirectContent();
-            //PdfTemplate template = contentByte.createTemplate(200, 200);
-           // Graphics2D graphics2d = template.createGraphics(200, 200,
-		//			new DefaultFontMapper());
-           // Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 200,
-			//		200);
-                                        
-            
-            chart.pack();
-            RefineryUtilities.centerFrameOnScreen(chart);
-            //chart.setVisible(true);
-            chart.setBounds(900, 200, 500, 500);
-            
-            Image gambar;
-         try {
-             gambar = Image.getInstance("D:\\Project\\grafik.png");
-             gambar.scaleAbsolute(550,750);
-             doc.add(gambar);
-         } catch (BadElementException ex) {
-             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (IOException ex) {
-             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (DocumentException ex) {
-             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
-         }
-            
-            //chart.dispose();
-            //crut.draw(graphics2d, rectangle2d);
-          //  graphics2d.dispose();
-            //java.awt.Image ancok = chart.createImage(100, 100);
-            //contentByte.addTemplate(template, 0, 0);
-            doc.newPage();
-            pdf.addCell("No");
-            pdf.addCell("Description");
-            pdf.addCell(bulan_start+"-"+String.valueOf(year_awal));
-            pdf.addCell(bulan_mid+"-"+String.valueOf(year_teng));
-            pdf.addCell(bulan_akhir+"-"+String.valueOf(year));
-            pdf.addCell("Total");
-            
-            for(int ij=0;ij<table.getRowCount();ij++){
-                String nom=table.getValueAt(ij,0).toString();
-                String deskripsi=table.getValueAt(ij,1).toString();
-                String tgl1=table.getValueAt(ij,2).toString();
-                String tgl2=table.getValueAt(ij,3).toString();
-                String tgl3=table.getValueAt(ij,4).toString();
-                String sum=table.getValueAt(ij,5).toString();
-                
-                pdf.addCell(nom);
-                pdf.addCell(deskripsi);
-                pdf.addCell(tgl1);
-                pdf.addCell(tgl2);
-                pdf.addCell(tgl3);
-                pdf.addCell(sum);
+            String path ="";
+            JFileChooser j = new JFileChooser();
+            j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int xa=j.showSaveDialog(this);
+            if(xa==JFileChooser.APPROVE_OPTION){
+                path = j.getSelectedFile().getPath();
             }
-           // doc.newPage();
-            doc.add(pdf);
+            // System.out.print(path);
+            Document doc =  new Document(PageSize.A4);;
+            //PdfWriter writer = null;
+            StackedBarChart chart = new StackedBarChart("Top Ten Pirep");
+            try {
+                PdfWriter.getInstance(doc, new FileOutputStream(path+"/"+acreg+"-"+"RELIABILITY REPORT"+"("+bulan_akhir+String.valueOf(year)+")"+".pdf"));
+                ///writer = PdfWriter.getInstance(doc, new FileOutputStream(path+"/table.pdf"));
+                PdfPTable pdf=new PdfPTable(6);
+                float[] width = new float[] { 0.5f, 4f,2f,2f,2f,2f };
+                pdf.setWidths(width);
+                //document.add(new Paragraph("Sample 1: This is simple image demo."));
+                //img.setAbsolutePosition(0, 0);
+                doc.open();
+                 String yourText = acreg;
+                 String yourText1 = bulan_akhir+"-"+year;
+                 final BufferedImage image = ImageIO.read(new File("D:\\Project\\cover_asli.png"));
+                 Graphics graphics = image.getGraphics();
+                 Color myBlue = new Color(0, 51, 102);
+                 Color myBlue1 = new Color(0, 102, 204);
+                 Color myBlue2 = new Color(102, 178, 255);
+                 Color myBlue3 = new Color(204, 229, 255);
+                 com.lowagie.text.Font fonp = FontFactory.getFont("Times-Roman", 8, Font.BOLD);
+                 fonp.setColor(myBlue);
+                 com.lowagie.text.Font fonp1 = FontFactory.getFont("Times-Roman", 8, Font.BOLD);
+                 fonp1.setColor(Color.BLACK);
+                 com.lowagie.text.Font fon = FontFactory.getFont(FontFactory.TIMES_ROMAN, 8);
+                 fon.setColor(Color.white);
+                 com.lowagie.text.Font fon1 = FontFactory.getFont(FontFactory.TIMES_ROMAN, 8);
+                 fon1.setColor(Color.black);
+                 graphics.setColor(myBlue);
+                 graphics.setFont(new Font("Arial ", Font.BOLD, 16));
+                 graphics.drawString(yourText, 615, 308);
+                 graphics.setFont(new Font("Arial ", Font.BOLD, 10));
+                 graphics.drawString(yourText1, 605, 360);
+            //Graphics2D g2
+            
+            ImageIO.write(image,  "png", new File("D:\\Project\\cover.png"));
+                Image img;
+                try {
+                    img = Image.getInstance("D:\\Project\\cover.png");
+                    img.setAbsolutePosition(20, 300);
+                    img.scalePercent(75, 75);
+                    doc.add(img);
+                } catch (BadElementException ex) {
+                    Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                doc.newPage();
+                Chunk underline = new Chunk("Aircraft Operation Summary",fonp);
+                Phrase phrase = new Phrase();
+                phrase.add(underline);
+                underline.setUnderline(0.1f, -2f); //0.1 thick, -2 y-location
+                //doc.add(underline);
+                Paragraph para = new Paragraph();
+                para.add(phrase);
+                para.setAlignment(2);
+                doc.add(para);
+                Paragraph para1 = new Paragraph(new Phrase(acreg+"\n"+"B737-8MAX", fonp1));
+                para1.setAlignment(2);
+                doc.add(para1);
+                Chunk periode = new Chunk("Period:        ",fon1);
+                Chunk periode1 = new Chunk(bulan_akhir+"-"+year,fonp1);
+                Phrase pras = new Phrase();
+                pras.add(periode);
+                pras.add(periode1);
+                Paragraph para2 = new Paragraph();
+                para2.add(pras);
+                para2.setAlignment(2);
+                doc.add(para2);
+                doc.add( Chunk.NEWLINE );
+                PdfPCell cel = new PdfPCell(new Phrase("No", fon));
+                cel.setBackgroundColor(myBlue1);
+                cel.setBorderColor(Color.black);
+                cel.setHorizontalAlignment(1);
+                pdf.addCell(cel);
+                PdfPCell cel1 = new PdfPCell(new Phrase("Description", fon));
+                cel1.setBackgroundColor(myBlue1);
+                cel1.setBorderColor(Color.black);
+                cel1.setHorizontalAlignment(1);
+                pdf.addCell(cel1);
+                PdfPCell cel2 = new PdfPCell(new Phrase(bulan_start+"-"+String.valueOf(year_awal), fon));
+                cel2.setBackgroundColor(myBlue1);
+                cel2.setBorderColor(Color.black);
+                cel2.setHorizontalAlignment(1);
+                pdf.addCell(cel2);
+                PdfPCell cel3 = new PdfPCell(new Phrase(bulan_mid+"-"+String.valueOf(year_teng), fon));
+                cel3.setBackgroundColor(myBlue1);
+                cel3.setBorderColor(Color.black);
+                cel3.setHorizontalAlignment(1);
+                pdf.addCell(cel3);
+                PdfPCell cel4 = new PdfPCell(new Phrase(bulan_akhir+"-"+String.valueOf(year), fon));
+                cel4.setBackgroundColor(myBlue1);
+                cel4.setBorderColor(Color.black);
+                cel4.setHorizontalAlignment(1);
+                pdf.addCell(cel4);
+                PdfPCell cel5 = new PdfPCell(new Phrase("Total", fon));
+                cel5.setBackgroundColor(myBlue1);
+                cel5.setBorderColor(Color.black);
+                cel5.setHorizontalAlignment(1);
+                pdf.addCell(cel5);
+                
+                
+                for(int ij=0;ij<table.getRowCount();ij++){
+                    String nom=table.getValueAt(ij,0).toString();
+                    String deskripsi=table.getValueAt(ij,1).toString();
+                    String tgl1=table.getValueAt(ij,2).toString();
+                    String tgl2=table.getValueAt(ij,3).toString();
+                    String tgl3=table.getValueAt(ij,4).toString();
+                    String sum=table.getValueAt(ij,5).toString();
+                    int ce=ij%2;
+                    PdfPCell cel6 = new PdfPCell(new Phrase(nom, fon1));
+                    if(ce!=1){
+                    cel6.setBackgroundColor(Color.white);}
+                    else{
+                    cel6.setBackgroundColor(myBlue3);
+                    }
+                    cel6.setBorderColor(Color.black);
+                    cel6.setHorizontalAlignment(1);
+                    pdf.addCell(cel6);
+                    PdfPCell cel7 = new PdfPCell(new Phrase(deskripsi, fon1));
+                    if(ce!=1){
+                    cel7.setBackgroundColor(Color.white);}
+                    else{
+                    cel7.setBackgroundColor(myBlue3);
+                    }
+                    cel7.setBorderColor(Color.black);
+                    cel7.setHorizontalAlignment(0);
+                    pdf.addCell(cel7);
+                    PdfPCell cel8 = new PdfPCell(new Phrase(tgl1, fon1));
+                    if(ce!=1){
+                    cel8.setBackgroundColor(Color.white);}
+                    else{
+                    cel8.setBackgroundColor(myBlue3);
+                    }
+                    cel8.setBorderColor(Color.black);
+                    cel8.setHorizontalAlignment(1);
+                    pdf.addCell(cel8);
+                    PdfPCell cel9 = new PdfPCell(new Phrase(tgl2, fon1));
+                    if(ce!=1){
+                    cel9.setBackgroundColor(Color.white);}
+                    else{
+                    cel9.setBackgroundColor(myBlue3);
+                    }
+                    cel9.setBorderColor(Color.black);
+                    cel9.setHorizontalAlignment(1);
+                    pdf.addCell(cel9);
+                    PdfPCell cel10 = new PdfPCell(new Phrase(tgl3, fon1));
+                    if(ce!=1){
+                    cel10.setBackgroundColor(Color.white);}
+                    else{
+                    cel10.setBackgroundColor(myBlue3);
+                    }
+                    cel10.setBorderColor(Color.black);
+                    cel10.setHorizontalAlignment(1);
+                    pdf.addCell(cel10);
+                    PdfPCell cel11 = new PdfPCell(new Phrase(sum, fon1));
+                    if(ce!=1){
+                    cel11.setBackgroundColor(Color.white);}
+                    else{
+                    cel11.setBackgroundColor(myBlue3);
+                    }
+                    cel11.setBorderColor(Color.black);
+                    cel11.setHorizontalAlignment(1);
+                    pdf.addCell(cel11);
                     
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DocumentException ex) {
+                    /*
+                    pdf.addCell(nom);
+                    pdf.addCell(deskripsi);
+                    pdf.addCell(tgl1);
+                    pdf.addCell(tgl2);
+                    pdf.addCell(tgl3);
+                    pdf.addCell(sum);*/
+                }
+                // doc.newPage();
+                doc.add(pdf);
+   
+                doc.newPage();
+                
+                // JFreeChart crut =ChartFactory.createStackedBarChart("Judul","xxx", "yyy", piedata);
+                
+                // PdfContentByte contentByte = writer.getDirectContent();
+                //PdfTemplate template = contentByte.createTemplate(200, 200);
+                // Graphics2D graphics2d = template.createGraphics(200, 200,
+                //			new DefaultFontMapper());
+                // Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 200,
+                //		200);
+                
+                
+                chart.pack();
+                RefineryUtilities.centerFrameOnScreen(chart);
+                //chart.setVisible(true);
+                chart.setBounds(900, 200, 500, 500);
+                
+                Image gambar;
+                try {
+                    gambar = Image.getInstance("D:\\Project\\grafik.png");
+                    gambar.setAbsolutePosition(70, 270);
+                    gambar.scalePercent(75, 75);
+                    doc.add(gambar);
+                } catch (BadElementException ex) {
+                    Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                PdfPTable pdf1=new PdfPTable(8);
+                tampil_barang();
+                float[] widths = new float[] { 0.8f, 1.3f,1.3f,2f,0.8f,2f,3.3f,3.3f };
+                pdf1.setWidths(widths);
+                doc.newPage();
+                Paragraph para3 = new Paragraph(new Phrase("PILOT REPORT\n\n", fonp1));
+                para3.setAlignment(1);
+                doc.add(para3);
+                doc.add( Chunk.NEWLINE );
+                doc.add( Chunk.NEWLINE );
+                PdfPCell cell = new PdfPCell(new Phrase("No", fon));
+                cell.setBackgroundColor(myBlue1);
+                cell.setBorderColor(Color.white);
+                cell.setHorizontalAlignment(1);
+                pdf1.addCell(cell);
+                PdfPCell cell1 = new PdfPCell(new Phrase("Aircraft Reg", fon));
+                cell1.setBackgroundColor(myBlue1);
+                cell1.setBorderColor(Color.white);
+                cell1.setHorizontalAlignment(1);
+                pdf1.addCell(cell1);
+                PdfPCell cell2 = new PdfPCell(new Phrase("Dates", fon));
+                cell2.setBackgroundColor(myBlue1);
+                cell2.setBorderColor(Color.white);
+                cell2.setHorizontalAlignment(1);
+                pdf1.addCell(cell2);
+                PdfPCell cell3 = new PdfPCell(new Phrase("AML-Page-NO", fon));
+                cell3.setBackgroundColor(myBlue1);
+                cell3.setBorderColor(Color.white);
+                cell3.setHorizontalAlignment(1);
+                pdf1.addCell(cell3);
+                PdfPCell cell4 = new PdfPCell(new Phrase("ATA", fon));
+                cell4.setBackgroundColor(myBlue1);
+                cell4.setBorderColor(Color.white);
+                cell4.setHorizontalAlignment(1);
+                pdf1.addCell(cell4);
+                PdfPCell cell5 = new PdfPCell(new Phrase("DESCRIPTION", fon));
+                cell5.setBackgroundColor(myBlue1);
+                cell5.setBorderColor(Color.white);
+                cell5.setHorizontalAlignment(1);
+                pdf1.addCell(cell5);
+                PdfPCell cell6 = new PdfPCell(new Phrase("DISCREPANCIES", fon));
+                cell6.setBackgroundColor(myBlue1);
+                cell6.setBorderColor(Color.white);
+                cell6.setHorizontalAlignment(1);
+                pdf1.addCell(cell6);
+                PdfPCell cell7 = new PdfPCell(new Phrase("RECTIFICATIONS", fon));
+                cell7.setBackgroundColor(myBlue1);
+                cell7.setBorderColor(Color.white);
+                cell7.setHorizontalAlignment(1);
+                pdf1.addCell(cell7);
+          
+     
+               
+                for(int kl=0;kl<tabellion.getRowCount();kl++){
+                    String no=tabellion.getValueAt(kl,0).toString();
+                    String air=tabellion.getValueAt(kl,1).toString();
+                    String date=tabellion.getValueAt(kl,2).toString();
+                    String aml=tabellion.getValueAt(kl,3).toString();
+                    String ata=tabellion.getValueAt(kl,4).toString();
+                    String des=tabellion.getValueAt(kl,5).toString();
+                    String dis=tabellion.getValueAt(kl,6).toString();
+                    String rec=tabellion.getValueAt(kl,7).toString();
+                int cek=kl%2;
+                PdfPCell cell8 = new PdfPCell(new Phrase(no, fon1));
+                if(cek!=1){
+                cell8.setBackgroundColor(myBlue2);}
+                else{
+                cell8.setBackgroundColor(myBlue3);
+                }
+                cell8.setBorderColor(Color.white);
+                cell8.setHorizontalAlignment(1);
+                pdf1.addCell(cell8);
+                PdfPCell cell9 = new PdfPCell(new Phrase(air, fon1));
+                if(cek!=1){
+                cell9.setBackgroundColor(myBlue2);}
+                else{
+                cell9.setBackgroundColor(myBlue3);
+                }
+                cell9.setBorderColor(Color.white);
+                cell9.setHorizontalAlignment(1);
+                pdf1.addCell(cell9);
+                PdfPCell cell10 = new PdfPCell(new Phrase(date, fon1));
+                if(cek!=1){
+                cell10.setBackgroundColor(myBlue2);}
+                else{
+                cell10.setBackgroundColor(myBlue3);
+                }
+                cell10.setBorderColor(Color.white);
+                cell10.setHorizontalAlignment(1);
+                pdf1.addCell(cell10);
+                PdfPCell cell11 = new PdfPCell(new Phrase(aml, fon1));
+                if(cek!=1){
+                cell11.setBackgroundColor(myBlue2);}
+                else{
+                cell11.setBackgroundColor(myBlue3);
+                }
+                cell11.setBorderColor(Color.white);
+                cell11.setHorizontalAlignment(1);
+                pdf1.addCell(cell11);
+                PdfPCell cell12 = new PdfPCell(new Phrase(ata, fon1));
+                if(cek!=1){
+                cell12.setBackgroundColor(myBlue2);}
+                else{
+                cell12.setBackgroundColor(myBlue3);
+                }
+                cell12.setBorderColor(Color.white);
+                cell12.setHorizontalAlignment(1);
+                pdf1.addCell(cell12);
+                PdfPCell cell13 = new PdfPCell(new Phrase(des, fon1));
+                if(cek!=1){
+                cell13.setBackgroundColor(myBlue2);}
+                else{
+                cell13.setBackgroundColor(myBlue3);
+                }
+                cell13.setBorderColor(Color.white);
+                cell13.setHorizontalAlignment(1);
+                pdf1.addCell(cell13);
+                PdfPCell cell14 = new PdfPCell(new Phrase(dis, fon1));
+                if(cek!=1){
+                cell14.setBackgroundColor(myBlue2);}
+                else{
+                cell14.setBackgroundColor(myBlue3);
+                }
+                cell14.setBorderColor(Color.white);
+                cell14.setHorizontalAlignment(1);
+                pdf1.addCell(cell14);
+                PdfPCell cell15 = new PdfPCell(new Phrase(rec, fon1));
+                if(cek!=1){
+                cell15.setBackgroundColor(myBlue2);}
+                else{
+                cell15.setBackgroundColor(myBlue3);
+                }
+                cell15.setBorderColor(Color.white);
+                cell15.setHorizontalAlignment(1);
+                pdf1.addCell(cell15);
+                /*
+                    pdf1.addCell(no);
+                    pdf1.addCell(air);
+                    pdf1.addCell(date);
+                    pdf1.addCell(aml);
+                    pdf1.addCell(ata);
+                    pdf1.addCell(des);
+                    pdf1.addCell(dis);
+                    pdf1.addCell(rec);*/
+                }
+                // doc.newPage();
+                doc.add(pdf1);
+                //chart.dispose();
+                //crut.draw(graphics2d, rectangle2d);
+                //  graphics2d.dispose();
+                //java.awt.Image ancok = chart.createImage(100, 100);
+                //contentByte.addTemplate(template, 0, 0);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (DocumentException ex) {
+                Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            doc.close();
+        } catch (IOException ex) {
             Logger.getLogger(form_data_barang.class.getName()).log(Level.SEVERE, null, ex);
         }
-            doc.close();
     }
     else{
     JScrollPane scrollPane = new JScrollPane(table);
